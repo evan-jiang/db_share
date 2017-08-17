@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.evan.db.share.dao.OrderDao">
+    
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.evan.db.share.domain.Order" useGeneratedKeys="true">
+        insert into `order` (
+            <trim suffixOverrides=",">
+                `product_code`,
+                `order_no`,
+            </trim>
+        ) values (
+            <trim suffixOverrides=",">
+                #{productCode},
+                #{orderNo},
+            </trim>
+        )
+    </insert>
+    <select id="selectByOrder" parameterType="com.evan.db.share.domain.Order" resultType="com.evan.db.share.domain.Order">
+        select id,
+            product_code as productCode,
+            order_no as orderNo
+        from
+            `order`
+        where 1=1
+            and product_code = #{productCode}
+            and order_no = #{orderNo}
+    </select>
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+           http://www.springframework.org/schema/aop     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       "
+    default-lazy-init="false">
+
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <!-- <value>classpath:system.properties</value> -->
+            </list>
+        </property>
+        <property name="fileEncoding" value="UTF-8" />
+    </bean>
+    <context:annotation-config />
+    <context:component-scan base-package="com.evan"></context:component-scan>
+
+    <import resource="spring-dao.xml"/>
+    
+    <bean id="dataSourceAspect" class="com.evan.db.share.DataSourceAspect"/>
+    
+    <aop:config>
+        <aop:aspect id="serviceDataSourceAspect" ref="dataSourceAspect">
+            <aop:pointcut expression="execution(* com.evan.db.share.dao.*.*(..))" id="cut" />
+            <aop:around pointcut-ref="cut" method="beforeAccessDB" />
+        </aop:aspect>
+    </aop:config>
+</beans>
