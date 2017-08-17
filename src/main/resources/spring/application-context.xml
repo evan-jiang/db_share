@@ -24,6 +24,7 @@
     
     <bean id="dataSourceAspect" class="com.evan.db.share.DataSourceAspect"/>
     
+    <!-- 数据库操作切面，每次访问数据库之前先通过此前面指定数据源 -->
     <aop:config>
         <aop:aspect id="serviceDataSourceAspect" ref="dataSourceAspect">
             <aop:pointcut expression="execution(* com.evan.db.share.dao.*.*(..))" id="cut" />
